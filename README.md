@@ -1,6 +1,6 @@
 # tfds aihub
 
-AIhub 데이터를 tfrecord 형태로 GCS에 저장/캐싱하기 위한 코드.
+AIhub 데이터를 tfrecord 형태로 GCS에 저장/캐싱하기 위한 코드. [PyPi](https://pypi.org/project/tfds-aihub/0.1.0/)
 
 ## 데이터셋
 
