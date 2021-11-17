@@ -1,6 +1,6 @@
 # tfds aihub
 
-A project to preprocess and store aihub data as TFRecord format in GCS. [PyPi](https://pypi.org/project/tfds-aihub/0.1.0/)
+A project to preprocess and store aihub data as TFRecord format in GCS. [PyPi](https://pypi.org/project/tfds-aihub/)
 
 ## How to build and cache datasets?
 
