@@ -1,6 +1,7 @@
 """k_fashion_image dataset."""
 import json
 import os
+import warnings
 import zipfile
 
 import numpy as np
@@ -145,7 +146,10 @@ def _trim_scale(x):
 
 def _draw_polygon(coords, width, height):
     img = Image.new("L", (width, height), 0)
-    ImageDraw.Draw(img).polygon(coords, outline=2, fill=1)
+    if len(coords) > 1:
+        ImageDraw.Draw(img).polygon(coords, outline=2, fill=1)
+    else:
+        warnings.warn(f"Cannot draw coords: {coords}")
     mask = np.array(img).reshape([width, height, 1])
     return mask
 
