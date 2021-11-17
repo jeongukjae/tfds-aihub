@@ -1,8 +1,17 @@
 # tfds aihub
 
-AIhub 데이터를 tfrecord 형태로 GCS에 저장/캐싱하기 위한 코드. [PyPi](https://pypi.org/project/tfds-aihub/0.1.0/)
+A project to preprocess and store aihub data as TFRecord format in GCS. [PyPi](https://pypi.org/project/tfds-aihub/0.1.0/)
 
-## 데이터셋
+## How to build and cache datasets?
+
+1. Create dataset file (example: [k_fashion_image.py](./tfds_aihub/k_fashion_image/k_fashion_image.py))
+2. Build dataset using tfds cli (`tfds build tfds_aihub/...`)
+3. Upload preprocessed dataset.
+4. Access dataset using `tfds.load("...", data_dir="gs://bucket/path")`
+   - detailed description: <https://www.tensorflow.org/datasets/gcs>
+   - authentication: <https://www.tensorflow.org/datasets/gcs#authentication>
+
+## Dataset
 
 ### [K-Fashion Image(`k_fashion_image`)](https://aihub.or.kr/aidata/7988/download)
 
@@ -20,7 +29,7 @@ AIhub 데이터를 tfrecord 형태로 GCS에 저장/캐싱하기 위한 코드. 
               "type": tfds.features.ClassLabel(names=_BBOX_TYPE),
               "bbox": tfds.features.BBoxFeature(),
               "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
-              # TODO style 관련 정보
+              # TODO labels for style
           })
       }
   )

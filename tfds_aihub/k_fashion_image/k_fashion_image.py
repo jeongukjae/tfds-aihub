@@ -43,9 +43,7 @@ class KFashionImage(tfds.core.GeneratorBasedBuilder):
     """DatasetBuilder for k_fashion_image dataset."""
 
     MANUAL_DOWNLOAD_INSTRUCTIONS = """
-    <https://aihub.or.kr/aidata/7988/download> 에서 다운로드 받은 뒤 manual download dir에 위치시켜 주시기 바랍니다.
-
-    접근 경로: "dl_manager.manual_dir / 'K-Fashion 이미지'
+    URL: <https://aihub.or.kr/aidata/7988/download>
     """
 
     VERSION = tfds.core.Version("1.1.0")
@@ -69,7 +67,7 @@ class KFashionImage(tfds.core.GeneratorBasedBuilder):
                             "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
                         }
                     )
-                    # TODO style 관련 정보
+                    # TODO labels for style
                 }
             ),
             supervised_keys=None,

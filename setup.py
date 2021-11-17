@@ -15,7 +15,7 @@ setup(
     version="0.1.0",
     author="Ukjae Jeong",
     author_email="jeongukjae@gmail.com",
-    description="AIHub 데이터를 TFRecord 방식으로 가공하기 위한 프로젝트",
+    description="A project to preprocess and store aihub data as TFRecord format in GCS",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jeongukjae/tfds-aihub",
