@@ -19,18 +19,19 @@ A project to preprocess and store aihub data as TFRecord format in GCS. [PyPi](h
 - splits
   - `Training`: `967806`
   - `Validation`: `120975`
-- Features:
 
-  ```python
-  tfds.features.FeaturesDict(
-      {
-          "image": tfds.features.Image(shape=(None, None, 3)),
-          "objects": tfds.features.Sequence({
-              "type": tfds.features.ClassLabel(names=_BBOX_TYPE),
-              "bbox": tfds.features.BBoxFeature(),
-              "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
-              # TODO labels for style
-          })
-      }
-  )
-  ```
+**Features:**
+
+```python
+tfds.features.FeaturesDict(
+    {
+        "image": tfds.features.Image(shape=(None, None, 3)),
+        "objects": tfds.features.Sequence({
+            "type": tfds.features.ClassLabel(names=_BBOX_TYPE),
+            "bbox": tfds.features.BBoxFeature(),
+            "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
+            # TODO labels for style
+        })
+    }
+)
+```
