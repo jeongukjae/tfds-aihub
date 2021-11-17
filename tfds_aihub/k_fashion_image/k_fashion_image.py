@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw
 
 # TODO(k_fashion_image): Markdown description  that will appear on the catalog page.
 _DESCRIPTION = """
-coord: top left
+coord: bottom left
 """
 
 # TODO(k_fashion_image): BibTeX citation
@@ -128,8 +128,8 @@ def _dict_to_bbox(rect_coord, polygon_coord, width, height):
                 "bbox": tfds.features.BBox(
                     xmin=_trim_scale((rect_item[0]["X좌표"]) / width),
                     xmax=_trim_scale((rect_item[0]["X좌표"] + rect_item[0]["가로"]) / width),
-                    ymin=_trim_scale((rect_item[0]["Y좌표"]) / height),
-                    ymax=_trim_scale((rect_item[0]["Y좌표"] + rect_item[0]["세로"]) / height),
+                    ymin=_trim_scale(1.0 - (rect_item[0]["Y좌표"]) / height),
+                    ymax=_trim_scale(1.0 - (rect_item[0]["Y좌표"] + rect_item[0]["세로"]) / height),
                 ),
                 "segmentation_mask": _draw_polygon(_aihub_coord_to_coord(polygon_item[0]), width, height),
             }
