@@ -1,7 +1,7 @@
 """k_fashion_image dataset."""
+import json
 import os
 import zipfile
-import json
 
 import numpy as np
 import tensorflow_datasets as tfds
@@ -24,7 +24,7 @@ _CLASS_LIST = [
     ["에스닉", ["히피", "웨스턴", "오리엔탈"]],
     ["컨템포러리", ["모던", "소피스트케이티드", "아방가르드"]],
     ["내추럴", ["컨트리", "리조트"]],
-    ["젠더플루이드", ['젠더리스']],
+    ["젠더플루이드", ["젠더리스"]],
     ["스포티", ["스포티"]],
     ["서브컬쳐", ["레트로", "키치/키덜트", "힙합", "펑크"]],
     ["캐주얼", ["밀리터리", "스트리트"]],
@@ -40,6 +40,7 @@ _BBOX_TYPE = ["아우터", "상의", "하의", "원피스"]
 
 class KFashionImage(tfds.core.GeneratorBasedBuilder):
     """DatasetBuilder for k_fashion_image dataset."""
+
     MANUAL_DOWNLOAD_INSTRUCTIONS = """
     <https://aihub.or.kr/aidata/7988/download> 에서 다운로드 받은 뒤 manual download dir에 위치시켜 주시기 바랍니다.
 
@@ -60,11 +61,13 @@ class KFashionImage(tfds.core.GeneratorBasedBuilder):
             features=tfds.features.FeaturesDict(
                 {
                     "image": tfds.features.Image(shape=(None, None, 3)),
-                    "objects": tfds.features.Sequence({
-                        "type": tfds.features.ClassLabel(names=_BBOX_TYPE),
-                        "bbox": tfds.features.BBoxFeature(),
-                        "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
-                    })
+                    "objects": tfds.features.Sequence(
+                        {
+                            "type": tfds.features.ClassLabel(names=_BBOX_TYPE),
+                            "bbox": tfds.features.BBoxFeature(),
+                            "segmentation_mask": tfds.features.Image(shape=(None, None, 1)),
+                        }
+                    )
                     # TODO style 관련 정보
                 }
             ),
@@ -75,7 +78,7 @@ class KFashionImage(tfds.core.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
-        path = dl_manager.manual_dir / 'K-Fashion 이미지'
+        path = dl_manager.manual_dir / "K-Fashion 이미지"
 
         return {
             "Training": self._generate_examples(path / "Training"),
@@ -97,14 +100,14 @@ class KFashionImage(tfds.core.GeneratorBasedBuilder):
 
                     basename, _ = os.path.splitext(item.filename)
                     with labeling_zipfile.open(basename + ".json", "r") as metafile:
-                        metadata = json.loads(metafile.read().decode('utf8'))
-                        height = metadata['이미지 정보']['이미지 높이']
-                        width = metadata['이미지 정보']['이미지 너비']
+                        metadata = json.loads(metafile.read().decode("utf8"))
+                        height = metadata["이미지 정보"]["이미지 높이"]
+                        width = metadata["이미지 정보"]["이미지 너비"]
                         metadata = metadata["데이터셋 정보"]["데이터셋 상세설명"]
 
                     yield str(item.filename), {
                         "image": image_bytes,
-                        "objects": _dict_to_bbox(metadata['렉트좌표'], metadata['폴리곤좌표'], width, height),
+                        "objects": _dict_to_bbox(metadata["렉트좌표"], metadata["폴리곤좌표"], width, height),
                     }
 
         labeling_zipfile.close()
@@ -129,7 +132,7 @@ def _dict_to_bbox(rect_coord, polygon_coord, width, height):
                     ymin=_trim_scale((rect_item[0]["Y좌표"]) / height),
                     ymax=_trim_scale((rect_item[0]["Y좌표"] + rect_item[0]["세로"]) / height),
                 ),
-                "segmentation_mask": _draw_polygon(_aihub_coord_to_coord(polygon_item[0]), width, height)
+                "segmentation_mask": _draw_polygon(_aihub_coord_to_coord(polygon_item[0]), width, height),
             }
         )
 
@@ -141,7 +144,7 @@ def _trim_scale(x):
 
 
 def _draw_polygon(coords, width, height):
-    img = Image.new('L', (width, height), 0)
+    img = Image.new("L", (width, height), 0)
     ImageDraw.Draw(img).polygon(coords, outline=2, fill=1)
     mask = np.array(img).reshape([width, height, 1])
     return mask
@@ -163,4 +166,4 @@ def _aihub_coord_to_coord(coords):
     [(602.004, 520.004), (571.004, 505.004), (545.004, 465.004), (531.004, 428.004)]
     """
     max_num = max(int(item[3:]) for item in coords)
-    return [(coords[f'X좌표{n}'], coords[f'Y좌표{n}']) for n in range(1, max_num + 1) if f'X좌표{n}' in coords]
+    return [(coords[f"X좌표{n}"], coords[f"Y좌표{n}"]) for n in range(1, max_num + 1) if f"X좌표{n}" in coords]
